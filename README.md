@@ -121,12 +121,14 @@ thread-creation failures print an error and end with failure.
 
 ## Team contributions
 
-| Member | Completed contribution |
+| Member | Contribution |
 | --- | --- |
-| Shazan Ansar Mohammed | Ran the five Mac configurations and log verification, captured five Terminal screenshots, and managed project files with AI guidance. |
-| Saina Zardosht | Team member; no separate completed technical contribution has been reported. |
+| Shazan Ansar Mohammed | Ran the five macOS test configurations, captured execution screenshots, and participated in result verification and submission packaging. |
+| Saina Zardosht | Initiated GitHub setup, reviewed the README and GenAI record, and participated in result verification and submission packaging. |
 
-ChatGPT prepared the implementation and documentation. Assistance is disclosed in `genai.txt`.
+Both members collaborated through the team's CSUDH ChatGPT workspace, checked the execution results and documentation, and prepared the final submission together.
+
+The implementation and documentation were prepared with ChatGPT assistance. The full communication, including the team's contribution clarification, is recorded in `genai.txt`.
 
 ## Experiments and evidence
 
