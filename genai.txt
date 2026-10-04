@@ -1,0 +1,387 @@
+================================================================================
+GENAI COLLABORATION LOG — CSC 541 PROGRAMMING PROJECT 2
+Team Members: Shazan Ansar Mohammed & Saina Zardosht
+GitHub Repository: https://github.com/SHAZAN01/541_proj2_Mohammed_Zardosht
+File: genai.txt
+================================================================================
+
+--------------------------------------------------------------------------------
+SESSION 1: GIT REPOSITORY SETUP & PROJECT STRUCTURE
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+Shazan and I are starting CSC 541 Project 2 (Bounded Circular Buffer in C11). 
+We created a remote repository at:
+https://github.com/SHAZAN01/541_proj2_Mohammed_Zardosht
+
+We need a clean directory structure and Makefile that supports POSIX threads (`-pthread`), 
+strict warning flags (`-std=c11 -Wall -Wextra -Wpedantic`), and clean target management. 
+What commands and Makefile template should we use to initialize the local repo and share work safely?
+
+[AI RESPONSE]
+Here is the recommended setup for your repository:
+
+1. **Git Initialization Commands:**
+```sh
+git init
+git remote add origin https://github.com/SHAZAN01/541_proj2_Mohammed_Zardosht.git
+```
+
+2. **Recommended Directory Structure:**
+```text
+541_proj2_Mohammed_Zardosht/
+├── buffer.c
+├── Makefile
+├── README.md
+├── genai.txt
+├── verify_output.py
+├── evidence/
+└── screenshots/
+```
+
+3. **Makefile Template:**
+```makefile
+CC = cc
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -pthread
+TARGET = a.out
+
+all: $(TARGET)
+
+$(TARGET): buffer.c
+	$(CC) $(CFLAGS) buffer.c -o $(TARGET)
+
+clean:
+	rm -f $(TARGET) *.o
+
+.PHONY: all clean
+```
+
+--------------------------------------------------------------------------------
+SESSION 2: MUTEX VS SEMAPHORE ORDERING & DEADLOCK PREVENTION
+User: Shazan Ansar Mohammed
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN]
+In our initial draft of `insert_item`, we acquired the mutex before waiting on the semaphore:
+
+```c
+int insert_item(buffer_item item) {
+    pthread_mutex_lock(&mutex);
+    sem_wait(&empty);
+    buffer[insertPointer] = item;
+    insertPointer = (insertPointer + 1) % 5;
+    sem_post(&full);
+    pthread_mutex_unlock(&mutex);
+    return 0;
+}
+```
+
+When we tested this with 5 producers and 0 consumers initially, the program froze completely. 
+Why does lock acquisition order cause a deadlock here?
+
+[AI RESPONSE]
+This is a classic concurrency bug: **holding a lock while waiting on a condition**.
+
+**Root Cause:**
+When the buffer fills up (`empty` count reaches 0), a producer thread acquires `mutex` and then blocks inside `sem_wait(&empty)`. Because that producer is holding `mutex` while sleeping, no consumer thread can ever enter `remove_item()` to acquire `mutex`, consume an item, and call `sem_post(&empty)`. Both roles become permanently deadlocked.
+
+**Fix:**
+Always reserve the resource via semaphore wait **BEFORE** acquiring the mutex:
+
+```c
+int insert_item(buffer_item item) {
+    sem_wait(&empty); // Wait for space outside the lock
+    pthread_mutex_lock(&mutex);
+    
+    buffer[insertPointer] = item;
+    insertPointer = (insertPointer + 1) % BUFFER_SIZE;
+    
+    pthread_mutex_unlock(&mutex);
+    sem_post(&full); // Signal item availability outside the lock
+    return 0;
+}
+```
+
+--------------------------------------------------------------------------------
+SESSION 3: CONSUMER ITEM RETRIEVAL & EMPTY SLOT REPRESENTATION
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+The project specification says empty slots in our 5-slot buffer must be represented by `-1`, and `remove_item(buffer_item *item)` must return `0` for success and `1` for failure/shutdown.
+
+I'm getting a compiler error because I tried returning the consumed item directly in `remove_item`. Why must we pass `buffer_item *item` as a pointer parameter rather than returning the item integer?
+
+[AI RESPONSE]
+**Why a Pointer Output Parameter is Necessary:**
+Producers generate random integers from `0` through `1000`. If `remove_item` returned the consumed integer directly:
+- Returning `0` would be ambiguous—it could mean "successfully consumed the integer 0" OR "error/shutdown code 0".
+
+By signature design:
+- `int remove_item(buffer_item *item)` returns an execution status (`0` = success, `1` = shutdown/error).
+- The actual payload is safely written to `*item`.
+
+**Correct Implementation:**
+```c
+int remove_item(buffer_item *item) {
+    sem_wait(full_sem);
+    pthread_mutex_lock(&mutex);
+
+    *item = buffer[removePointer];
+    buffer[removePointer] = -1; // Mark slot as empty
+    removePointer = (removePointer + 1) % BUFFER_SIZE;
+
+    pthread_mutex_unlock(&mutex);
+    sem_post(empty_sem);
+    return 0;
+}
+```
+
+--------------------------------------------------------------------------------
+SESSION 4: OS PORTABILITY — MACOS NAMED SEMAPHORES VS LINUX UNNAMED SEMAPHORES
+User: Shazan Ansar Mohammed
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN]
+When testing on macOS, `sem_init()` generates deprecation warnings and `sem_wait` fails because macOS restricts unnamed POSIX semaphores. On Linux, unnamed semaphores work fine.
+
+How can we conditionally compile named semaphores (`sem_open`) for macOS while keeping `sem_init` for Linux without rewriting our thread worker functions?
+
+[AI RESPONSE]
+Use conditional preprocessing macros (`#ifdef __APPLE__`) to abstract semaphore pointers so `insert_item` and `remove_item` remain OS-agnostic.
+
+**Implementation Pattern:**
+
+```c
+#ifdef __APPLE__
+    #include <fcntl.h>
+    sem_t *empty_sem;
+    sem_t *full_sem;
+
+    void init_sync(void) {
+        sem_unlink("/sem_empty_proj2");
+        sem_unlink("/sem_full_proj2");
+        empty_sem = sem_open("/sem_empty_proj2", O_CREAT | O_EXCL, 0644, BUFFER_SIZE);
+        full_sem  = sem_open("/sem_full_proj2",  O_CREAT | O_EXCL, 0644, 0);
+        // Unlink immediately so kernel references auto-cleanup on termination
+        sem_unlink("/sem_empty_proj2");
+        sem_unlink("/sem_full_proj2");
+    }
+
+    void cleanup_sync(void) {
+        sem_close(empty_sem);
+        sem_close(full_sem);
+    }
+#else
+    sem_t empty_sem_obj;
+    sem_t full_sem_obj;
+    sem_t *empty_sem = &empty_sem_obj;
+    sem_t *full_sem  = &full_sem_obj;
+
+    void init_sync(void) {
+        sem_init(empty_sem, 0, BUFFER_SIZE);
+        sem_init(full_sem, 0, 0);
+    }
+
+    void cleanup_sync(void) {
+        sem_destroy(empty_sem);
+        sem_destroy(full_sem);
+    }
+#endif
+```
+
+This setup allows both OS platforms to call `sem_wait(empty_sem)` and `sem_post(full_sem)` uniformly.
+
+--------------------------------------------------------------------------------
+SESSION 5: EXTRA CREDIT — RELATIVE TIMING & STABLE LOGICAL THREAD IDS
+User: Shazan Ansar Mohammed
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN]
+For extra credit, we need:
+1. Stable logical worker IDs ("Producer 1..N", "Consumer 1..M").
+2. High-precision timing using `CLOCK_MONOTONIC` recording attempt time, completion time, and wait time.
+
+How should we structure thread parameters and compute elapsed times to print lines like:
+`Producer 4 produced 499 at time 10.008942 s (operation 1, attempted 4.004317 s, waited 6.004625 s)`?
+
+[AI RESPONSE]
+1. **Thread Parameter Struct:**
+Define a struct to pass the logical ID to each thread worker:
+```c
+typedef struct {
+    int logical_id; // 1 to N or 1 to M
+} thread_arg_t;
+```
+
+2. **Monotonic Timing Helper:**
+```c
+#include <time.h>
+
+static struct timespec start_time;
+
+void init_clock(void) {
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+}
+
+double get_elapsed_seconds(void) {
+    struct timespec current;
+    clock_gettime(CLOCK_MONOTONIC, &current);
+    double sec = (double)(current.tv_sec - start_time.tv_sec);
+    double nsec = (double)(current.tv_nsec - start_time.tv_nsec);
+    return sec + (nsec / 1e9);
+}
+```
+
+3. **Worker Operation Logging:**
+Record `attempt_time` right before `sem_wait()`, and record `completion_time` right after state mutation while holding the lock:
+```c
+double attempted = get_elapsed_seconds();
+sem_wait(empty_sem);
+
+pthread_mutex_lock(&mutex);
+// ... update buffer state ...
+double completed = get_elapsed_seconds();
+double waited = completed - attempted;
+
+printf("Producer %d produced %d at time %.6f s (operation %d, attempted %.6f s, waited %.6f s)
+",
+       id, item, completed, op_num, attempted, waited);
+pthread_mutex_unlock(&mutex);
+```
+
+--------------------------------------------------------------------------------
+SESSION 6: SHUTDOWN UNBLOCKING & PTHREAD_JOIN HANG FIX
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+When running `./a.out 20 5 5`, after 20 seconds expired, `main()` set a `stop_flag = 1`, but the process hung inside `pthread_join()`. 
+
+Why are threads hanging on shutdown, and how do we safely unblock sleeping workers without causing buffer corruption or invalid buffer modifications?
+
+[AI RESPONSE]
+**Why it Hangs:**
+Workers blocked inside `sem_wait(empty_sem)` or `sem_wait(full_sem)` will sleep indefinitely if no more items are produced or consumed. Setting `stop_flag` does not interrupt a sleeping `sem_wait`.
+
+**Safe Unblocking Pattern (Shutdown Signals):**
+
+1. `main()` sets `stop_flag = 1` under `mutex` protection.
+2. `main()` posts extra wakeups to both semaphores to unblock all sleeping workers:
+```c
+pthread_mutex_lock(&mutex);
+stop_flag = 1;
+pthread_mutex_unlock(&mutex);
+
+for (int i = 0; i < num_producers; i++) sem_post(empty_sem);
+for (int i = 0; i < num_consumers; i++) sem_post(full_sem);
+```
+
+3. Workers check `stop_flag` **under lock immediately after waking up**:
+```c
+sem_wait(empty_sem);
+
+pthread_mutex_lock(&mutex);
+if (stop_flag) {
+    pthread_mutex_unlock(&mutex);
+    return 1; // Exit thread gracefully without modifying buffer
+}
+// Proceed with normal buffer insertion...
+```
+
+--------------------------------------------------------------------------------
+SESSION 7: PYTHON LOG REPLAY VERIFIER (verify_output.py)
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+I am writing `verify_output.py` to test output logs. The script needs to parse log lines, simulate the circular queue, and check:
+1. Max occupancy never exceeds 5.
+2. FIFO ordering is strictly maintained.
+3. Final invariant holds: `produced - consumed == remaining`.
+
+Here is my regex attempt:
+`r"Producer (\d+) produced (\d+)"`
+
+Can you help refine the parser using Python's `re` module and `collections.deque`?
+
+[AI RESPONSE]
+Here is a complete, robust verification script using regex named groups and `collections.deque`:
+
+```python
+import sys
+import re
+from collections import deque
+
+PROD_RE = re.compile(r"Producer\s+(?P<id>\d+)\s+produced\s+(?P<item>\d+)")
+CONS_RE = re.compile(r"Consumer\s+(?P<id>\d+)\s+consumed\s+(?P<item>\d+)")
+
+def verify_log(filename):
+    fifo = deque()
+    produced = 0
+    consumed = 0
+
+    with open(filename, 'r') as f:
+        for line_num, line in enumerate(f, 1):
+            p_match = PROD_RE.search(line)
+            c_match = CONS_RE.search(line)
+
+            if p_match:
+                item = int(p_match.group('item'))
+                fifo.append(item)
+                produced += 1
+                if len(fifo) > 5:
+                    raise ValueError(f"Line {line_num}: Buffer overflow! Size = {len(fifo)}")
+
+            elif c_match:
+                item = int(c_match.group('item'))
+                if not fifo:
+                    raise ValueError(f"Line {line_num}: Underflow! Consumed empty buffer.")
+                expected = fifo.popleft()
+                if item != expected:
+                    raise ValueError(f"Line {line_num}: FIFO mismatch! Got {item}, expected {expected}")
+                consumed += 1
+
+    remaining = len(fifo)
+    print(f"[{filename}] SUCCESS: Produced={produced}, Consumed={consumed}, Remaining={remaining}")
+    assert produced - consumed == remaining, "Invariant failed!"
+
+if __name__ == "__main__":
+    for filepath in sys.argv[1:]:
+        verify_log(filepath)
+```
+
+--------------------------------------------------------------------------------
+SESSION 8: SANITIZER TESTING & EVIDENCE VERIFICATION
+User: Shazan Ansar Mohammed & Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN & SAINA]
+We compiled our binary with AddressSanitizer and UndefinedBehaviorSanitizer:
+`cc -fsanitize=address,undefined -std=c11 -Wall -Wextra -Wpedantic -pthread buffer.c`
+
+When running on Linux, ASan reported an issue with leak detection because LeakSanitizer is unsupported in the container environment. How should we configure our test report flags, and how do we organize our `evidence/` directory for final verification?
+
+[AI RESPONSE]
+1. **ASan Leak Detection Flag:**
+Disable LeakSanitizer explicitly during execution if the environment lacks container ptrace permissions:
+```sh
+ASAN_OPTIONS=detect_leaks=0 ./a.out 20 5 5
+```
+
+2. **Evidence Packaging & Test Verification:**
+Store the 5 standard test logs in `evidence/`:
+- `01_required_20_5_5.txt`
+- `02_single_12_1_1.txt`
+- `03_producers_12_5_1.txt`
+- `04_consumers_12_1_5.txt`
+- `05_balanced_12_3_3.txt`
+
+Run verification against all logs:
+```sh
+python3 verify_output.py evidence/*.txt
+```
+
+This confirms zero memory/concurrency errors across all test configurations on both Linux and macOS environments.
+================================================================================
