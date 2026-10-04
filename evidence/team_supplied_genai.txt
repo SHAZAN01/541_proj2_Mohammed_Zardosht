@@ -1,0 +1,239 @@
+================================================================================
+GENAI COLLABORATION LOG — CSC 541 PROGRAMMING PROJECT 2
+Team Members: Shazan Ansar Mohammed & Saina Zardosht
+Repository: 541_proj2_Mohammed_Zardosht
+File: genai.txt
+================================================================================
+
+--------------------------------------------------------------------------------
+SESSION 1: ARCHITECTURE & SYNCHRONIZATION ORDERING
+User: Shazan Ansar Mohammed
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN]
+We are implementing a 5-slot circular bounded buffer in C11 using POSIX threads (`pthread_mutex_t`) and semaphores (`empty`, `full`). 
+
+Here is our initial draft for `insert_item`:
+
+```c
+int insert_item(buffer_item item) {
+    pthread_mutex_lock(&mutex);
+    sem_wait(&empty);
+    // write to buffer[insertPointer]
+    sem_post(&full);
+    pthread_mutex_unlock(&mutex);
+    return 0;
+}
+```
+
+Is there a concurrency or deadlock issue with acquiring the mutex before calling `sem_wait(&empty)`?
+
+[AI RESPONSE]
+Yes, this code contains a classic deadlock bug. 
+
+If the buffer becomes full (i.e., `empty` count reaches 0), a producer thread will acquire `mutex` and then block inside `sem_wait(&empty)`. Because the producer is holding `mutex` while asleep, no consumer thread can acquire `mutex` to run `remove_item()`, free a slot, and call `sem_post(&empty)`. The system will permanently deadlock.
+
+**Correct Synchronization Order:**
+Always perform semaphore waits **outside** and **before** acquiring the mutex lock:
+
+1. `sem_wait(&empty)` — Reserve an available slot (blocks if full without holding lock).
+2. `pthread_mutex_lock(&mutex)` — Safely mutate shared circular buffer state.
+3. Update slot and pointers.
+4. `pthread_mutex_unlock(&mutex)` — Release lock.
+5. `sem_post(&full)` — Signal available item to consumers.
+
+--------------------------------------------------------------------------------
+SESSION 2: CIRCULAR BUFFER STATE & CONSUMER RETURN STATUS
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+In `remove_item(buffer_item *item)`, slots containing `-1` represent empty slots. The assignment states `remove_item` should return `0` on success and `1` on error/shutdown. 
+
+Why can't `remove_item` simply return the item value directly as an `int` instead of passing a pointer? Also, how do we correctly advance `removePointer` without going out of bounds in a 5-slot array?
+
+[AI RESPONSE]
+1. **Return Value vs. Item Payload:** `0` is a valid payload item (producers generate integers from `0` to `1000`). If `remove_item` returned the payload directly, returning `0` would be ambiguous—you wouldn't know if it meant success with item `0` or a failure code. Passing `buffer_item *item` as an output pointer cleanly separates execution status (`0` = success, `1` = shutdown/error) from the data payload.
+
+2. **Circular Pointer Advancement:** Use modulo arithmetic (`BUFFER_SIZE = 5`):
+```c
+*item = buffer[removePointer];
+buffer[removePointer] = -1; // Mark slot as empty
+removePointer = (removePointer + 1) % BUFFER_SIZE;
+```
+This guarantees the pointer cleanly wraps from slot `4` back to slot `0`.
+
+--------------------------------------------------------------------------------
+SESSION 3: MACOS VS LINUX SEMAPHORE COMPATIBILITY
+User: Shazan Ansar Mohammed
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN]
+When compiling on macOS, `sem_init()` generates deprecation warnings and runtime errors because macOS POSIX unnamed semaphores are restricted. How can we conditionally compile named POSIX semaphores (`sem_open`) for macOS while retaining `sem_init` for Linux?
+
+[AI RESPONSE]
+You can use macro checks (`#ifdef __APPLE__`) to split the initialization and cleanup routines while keeping the core `sem_wait` and `sem_post` logic identical.
+
+**Implementation Strategy:**
+
+```c
+#ifdef __APPLE__
+    #include <fcntl.h>
+    sem_t *empty_sem;
+    sem_t *full_sem;
+
+    // In initialization:
+    sem_unlink("/sem_empty");
+    sem_unlink("/sem_full");
+    empty_sem = sem_open("/sem_empty", O_CREAT | O_EXCL, 0644, 5);
+    full_sem  = sem_open("/sem_full",  0644, 0);
+    // Immediately unlink so names are cleaned up even on ungraceful exits
+    sem_unlink("/sem_empty");
+    sem_unlink("/sem_full");
+#else
+    sem_t empty_sem_obj;
+    sem_t full_sem_obj;
+    sem_t *empty_sem = &empty_sem_obj;
+    sem_t *full_sem  = &full_sem_obj;
+
+    sem_init(empty_sem, 0, 5);
+    sem_init(full_sem, 0, 0);
+#endif
+```
+By defining `empty_sem` and `full_sem` as pointers across both OS targets, the rest of your `insert_item` and `remove_item` code uses `sem_wait(empty_sem)` identically on both macOS and Linux.
+
+--------------------------------------------------------------------------------
+SESSION 4: RELATIVE TIMING WITH CLOCK_MONOTONIC (EXTRA CREDIT)
+User: Shazan Ansar Mohammed
+--------------------------------------------------------------------------------
+
+[PROMPT - SHAZAN]
+For the extra credit, we need to track attempt time, completion time, and wait time for each operation using `CLOCK_MONOTONIC` relative to program startup. 
+
+How do we write a small helper function in C to return the double-precision elapsed time in seconds from a global `struct timespec start_time`?
+
+[AI RESPONSE]
+Here is a thread-safe helper function using `clock_gettime`:
+
+```c
+#include <time.h>
+
+static struct timespec start_time;
+
+void init_clock(void) {
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+}
+
+double get_elapsed_seconds(void) {
+    struct timespec current;
+    clock_gettime(CLOCK_MONOTONIC, &current);
+    
+    double sec = (double)(current.tv_sec - start_time.tv_sec);
+    double nsec = (double)(current.tv_nsec - start_time.tv_nsec);
+    
+    return sec + (nsec / 1e9);
+}
+```
+
+**Usage inside worker threads:**
+1. Call `double attempt_t = get_elapsed_seconds();` immediately before `sem_wait()`.
+2. Inside the mutex lock after changing the buffer, call `double complete_t = get_elapsed_seconds();`.
+3. Compute wait time: `double wait_t = complete_t - attempt_t;`.
+
+--------------------------------------------------------------------------------
+SESSION 5: SHUTDOWN SIGNALING & UNBLOCKING WAITING THREADS
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+When the runtime timer expires, some producer or consumer threads might be stuck sleeping inside `sem_wait(&empty)` or `sem_wait(&full)`. If `main` sets `stop_flag = 1`, those threads remain blocked and `pthread_join` hangs forever. 
+
+How do we safely wake up all waiting threads without accidentally inserting or removing invalid items?
+
+[AI RESPONSE]
+To prevent `pthread_join` deadlocks during shutdown:
+
+1. **Set Stop Flag under Lock:**
+```c
+pthread_mutex_lock(&mutex);
+stop_flag = 1;
+pthread_mutex_unlock(&mutex);
+```
+
+2. **Post Wakeup Signals:**
+Post enough extra increments to both semaphores to unblock any waiting worker:
+```c
+for (int i = 0; i < num_producers; i++) sem_post(empty_sem);
+for (int i = 0; i < num_consumers; i++) sem_post(full_sem);
+```
+
+3. **Check Flag Inside Workers (Double-Check Pattern):**
+When a worker wakes up from `sem_wait`, it must check `stop_flag` *under the mutex* BEFORE modifying the buffer:
+```c
+sem_wait(empty_sem);
+
+pthread_mutex_lock(&mutex);
+if (stop_flag) {
+    pthread_mutex_unlock(&mutex);
+    return 1; // Exit gracefully without modifying buffer
+}
+// Perform actual buffer insertion here...
+```
+
+--------------------------------------------------------------------------------
+SESSION 6: PYTHON LOG REPLAY & VERIFICATION SCRIPT
+User: Saina Zardosht
+--------------------------------------------------------------------------------
+
+[PROMPT - SAINA]
+I need to write a standalone Python 3 script (`verify_output.py`) to parse our execution log, verify that no more than 5 items are in the buffer at any time, ensure items are removed in strict FIFO order, and confirm that `produced - consumed == remaining`. 
+
+What regular expression approach and data structures should I use to parse lines like:
+`Producer 4 produced 499 at time 10.008942 s (operation 1, attempted 4.004317 s, waited 6.004625 s)`?
+
+[AI RESPONSE]
+Use Python's `re` module with named regex groups and a standard `collections.deque` to model the circular FIFO buffer:
+
+```python
+import sys
+import re
+from collections import deque
+
+# Regular expressions for log parsing
+PROD_PATTERN = re.compile(
+    r"Producer\s+(?P<id>\d+)\s+produced\s+(?P<item>\d+)\s+at time"
+)
+CONS_PATTERN = re.compile(
+    r"Consumer\s+(?P<id>\d+)\s+consumed\s+(?P<item>\d+)\s+at time"
+)
+
+def verify_log(filepath):
+    buffer_fifo = deque()
+    produced_count = 0
+    consumed_count = 0
+
+    with open(filepath, 'r') as f:
+        for line_num, line in enumerate(f, 1):
+            prod_match = PROD_PATTERN.search(line)
+            cons_match = CONS_PATTERN.search(line)
+
+            if prod_match:
+                item = int(prod_match.group('item'))
+                buffer_fifo.append(item)
+                produced_count += 1
+                assert len(buffer_fifo) <= 5, f"Line {line_num}: Buffer overflow! Size > 5"
+
+            elif cons_match:
+                item = int(cons_match.group('item'))
+                assert len(buffer_fifo) > 0, f"Line {line_num}: Buffer underflow! Consumed from empty buffer"
+                expected_item = buffer_fifo.popleft()
+                assert item == expected_item, f"Line {line_num}: FIFO Violation! Expected {expected_item}, got {item}"
+                consumed_count += 1
+
+    print(f"Verification Successful: {produced_count} produced, {consumed_count} consumed, {len(buffer_fifo)} remaining.")
+
+if __name__ == "__main__":
+    verify_log(sys.argv[1])
+```
+This guarantees independent automated validation of your C program's concurrency correctness.
+================================================================================

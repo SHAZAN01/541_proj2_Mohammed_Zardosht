@@ -10,4 +10,4 @@ mkdir -p evidence screenshots
 ./a.out 12 1 5 > evidence/mac_04_consumers.txt
 ./a.out 12 3 3 > evidence/mac_05_balanced.txt
 printf 'Five runs completed. Full logs are in evidence/mac_*.txt.\n'
-printf 'Take the five Terminal screenshots using START_HERE_MAC.md.\n'
+printf 'See README.md for screenshot names and log verification commands.\n'
