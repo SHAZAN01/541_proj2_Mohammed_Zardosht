@@ -1,0 +1,115 @@
+[
+  {
+    "arguments": [],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "20",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "0",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "-1",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "abc",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "1.5",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "20",
+      "0",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "20",
+      "5",
+      "0"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "20",
+      "129",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "86401",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "9999999999999999999999",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "20",
+      "5",
+      "5",
+      "extra"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  },
+  {
+    "arguments": [
+      "20x",
+      "5",
+      "5"
+    ],
+    "exit_code": 1,
+    "stderr": "Usage: /workspace/scratch/ec7888bbf8fc/541_proj2_Mohammed_Zardosht/a.out <seconds 1..86400> <producers 1..128> <consumers 1..128>"
+  }
+]

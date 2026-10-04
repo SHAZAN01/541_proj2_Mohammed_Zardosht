@@ -1,0 +1,150 @@
+Bounded buffer: capacity=5, runtime=12 s, producers=1, consumers=1
+Synchronization initialized: mutex=0, empty=5, full=0
+Times are elapsed seconds since program start.
+Created Producer 1
+Created Consumer 1
+Producer 1 tries to insert 67 at time 1.037078 s (operation 1)
+Producer 1 produced 67 at time 1.037165 s (operation 1, attempted 1.037078 s, waited 0.000087 s)
+slot 0: 67
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 1 tries to insert 973 at time 2.065313 s (operation 2)
+Producer 1 produced 973 at time 2.065527 s (operation 2, attempted 2.065313 s, waited 0.000214 s)
+slot 0: 67
+slot 1: 973
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 1 tries to consume at time 2.067148 s (operation 1)
+Consumer 1 consumed 67 at time 2.067236 s (operation 1, attempted 2.067148 s, waited 0.000088 s)
+slot 0: -1
+slot 1: 973
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 tries to consume at time 2.067389 s (operation 2)
+Consumer 1 consumed 973 at time 2.067412 s (operation 2, attempted 2.067389 s, waited 0.000023 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 1 tries to consume at time 3.096624 s (operation 3)
+Producer 1 tries to insert 332 at time 3.101613 s (operation 3)
+Producer 1 produced 332 at time 3.101717 s (operation 3, attempted 3.101613 s, waited 0.000104 s)
+slot 0: -1
+slot 1: -1
+slot 2: 332
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 consumed 332 at time 3.101827 s (operation 3, attempted 3.096624 s, waited 0.005203 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 1 tries to consume at time 3.101947 s (operation 4)
+Producer 1 tries to insert 647 at time 4.131844 s (operation 4)
+Producer 1 produced 647 at time 4.131939 s (operation 4, attempted 4.131844 s, waited 0.000095 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 647
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 consumed 647 at time 4.132107 s (operation 4, attempted 3.101947 s, waited 1.030160 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 1 tries to consume at time 5.166301 s (operation 5)
+Producer 1 tries to insert 227 at time 6.180524 s (operation 5)
+Producer 1 produced 227 at time 6.180702 s (operation 5, attempted 6.180524 s, waited 0.000178 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 227
+Buffer count: 1/5
+
+Consumer 1 consumed 227 at time 6.180833 s (operation 5, attempted 5.166301 s, waited 1.014532 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 1 tries to insert 810 at time 9.276002 s (operation 6)
+Producer 1 produced 810 at time 9.276160 s (operation 6, attempted 9.276002 s, waited 0.000158 s)
+slot 0: 810
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 1 tries to insert 439 at time 9.276309 s (operation 7)
+Producer 1 produced 439 at time 9.276367 s (operation 7, attempted 9.276309 s, waited 0.000058 s)
+slot 0: 810
+slot 1: 439
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Producer 1 tries to insert 949 at time 9.276502 s (operation 8)
+Producer 1 produced 949 at time 9.276523 s (operation 8, attempted 9.276502 s, waited 0.000021 s)
+slot 0: 810
+slot 1: 439
+slot 2: 949
+slot 3: -1
+slot 4: -1
+Buffer count: 3/5
+
+Consumer 1 tries to consume at time 10.324567 s (operation 6)
+Consumer 1 consumed 810 at time 10.324678 s (operation 6, attempted 10.324567 s, waited 0.000111 s)
+slot 0: -1
+slot 1: 439
+slot 2: 949
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 1 tries to consume at time 11.369630 s (operation 7)
+Consumer 1 consumed 439 at time 11.369761 s (operation 7, attempted 11.369630 s, waited 0.000131 s)
+slot 0: -1
+slot 1: -1
+slot 2: 949
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Stopping at time 12.001229 s; pending attempts will be stopped.
+Summary: produced=8 consumed=7 remaining=1
+slot 0: -1
+slot 1: -1
+slot 2: 949
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+All threads joined; synchronization resources released.

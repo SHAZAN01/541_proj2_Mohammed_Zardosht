@@ -1,0 +1,52 @@
+CSC 541 PROJECT 2 — PREPARATION TEST REPORT
+Date (UTC): 2026-10-04
+Environment: Linux x86_64; GCC 13.3.0
+Team: Shazan Ansar Mohammed; Saina Zardosht
+
+1. Strict build: PASS, no diagnostics; exit code 0
+   gcc -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 -pthread buffer.c -o a.out
+2. Makefile build: PASS, exit code 0
+   make clean
+   make
+3. Five documented execution cases: PASS, each exit code 0
+   See verification.txt and the five full 01..05 logs.
+4. Named-semaphore branch: PASS, exit code 0
+   gcc -std=c11 -Wall -Wextra -Wpedantic -Werror -pthread -DUSE_NAMED_SEMAPHORES buffer.c -o a_named.out
+   ./a_named.out 5 3 3
+   This exercises the named-semaphore path on Linux; it is not a macOS run.
+5. Address/undefined-behavior sanitizer build and run: PASS, exit code 0
+   gcc -std=c11 -Wall -Wextra -Wpedantic -Werror -pthread -fsanitize=address,undefined -g buffer.c -o a_sanitize.out
+   ASAN_OPTIONS=detect_leaks=0 ./a_sanitize.out 5 5 5
+   stderr was empty on this run; no AddressSanitizer or UBSan findings.
+   An earlier default run could not finish LeakSanitizer because this
+   environment uses ptrace. Leak detection was disabled for the rerun.
+   Memory-leak detection and ThreadSanitizer were not claimed as passed.
+6. Invalid input handling: PASS
+   Thirteen malformed, missing, zero, negative, overflow, and out-of-range
+   cases returned failure immediately and printed Usage. See invalid_inputs.json.
+7. Shell syntax: PASS
+   sh -n run_tests.sh
+
+Log replay checks:
+PASS 01_required_20_5_5.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=46, consumed=42, remaining=4, peak=5, max producer wait=2.001714s, max consumer wait=1.000795s
+PASS 02_single_12_1_1.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=7, consumed=3, remaining=4, peak=5, max producer wait=0.000045s, max consumer wait=0.000819s
+PASS 03_producers_12_5_1.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=12, consumed=7, remaining=5, peak=5, max producer wait=6.004625s, max consumer wait=1.000786s
+PASS 04_consumers_12_1_5.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=7, consumed=7, remaining=0, peak=3, max producer wait=0.000042s, max consumer wait=4.004117s
+PASS 05_balanced_12_3_3.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=16, consumed=13, remaining=3, peak=5, max producer wait=1.000955s, max consumer wait=3.002484s
+PASS 06_named_semaphore.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=4, consumed=3, remaining=1, peak=1, max producer wait=0.000037s, max consumer wait=3.002964s
+PASS 07_address_undefined_sanitizers.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=9, consumed=9, remaining=0, peak=3, max producer wait=0.000041s, max consumer wait=2.001708s
+
+Review notes:
+- insert_item waits for empty before locking mutex; remove_item waits for full.
+- Buffer slots, both pointers, count, totals, and operation snapshots are protected.
+- Worker context is thread-local; random-generator state belongs to each worker.
+- Stop flag uses C11 atomics; no worker mutates the buffer after stopping is set.
+- Named semaphores are unlinked after opening; threads join before close/destroy.
+- The five PNGs are rendered reference output captures, not literal OS screenshots.
+- Actual Mac screenshots, Mac execution, final student contribution statements,
+  and final conversation completeness still need the team's verification.
+- GitHub repository creation and collaborator invitation have not been performed.
+- Grading is the instructor's decision; this report does not guarantee 120/100.
+
+Source SHA-256:
+9cca7066f22d07d4acd992111dc90597ff9324572857a09f9a93084d5867b4c2  buffer.c

@@ -1,0 +1,9 @@
+a.out
+a_named.out
+a_sanitize.out
+*.o
+.DS_Store
+*.zip
+# Full conversation and personal handoff instructions stay in the Canvas ZIP.
+genai.txt
+START_HERE_MAC.md

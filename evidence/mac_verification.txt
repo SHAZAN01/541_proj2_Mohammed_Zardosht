@@ -1,0 +1,5 @@
+PASS mac_01_required.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=38, consumed=38, remaining=0, peak=3, max producer wait=0.000549s, max consumer wait=2.043725s
+PASS mac_02_single.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=8, consumed=7, remaining=1, peak=3, max producer wait=0.000214s, max consumer wait=1.030160s
+PASS mac_03_producers.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=11, consumed=6, remaining=5, peak=5, max producer wait=4.128238s, max consumer wait=0.000211s
+PASS mac_04_consumers.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=4, consumed=4, remaining=0, peak=2, max producer wait=0.000124s, max consumer wait=6.203554s
+PASS mac_05_balanced.txt: FIFO, slots, count 0..5, IDs, attempt/completion times, shutdown; produced=20, consumed=19, remaining=1, peak=4, max producer wait=0.000275s, max consumer wait=1.008346s

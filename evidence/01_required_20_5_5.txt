@@ -1,0 +1,815 @@
+Bounded buffer: capacity=5, runtime=20 s, producers=5, consumers=5
+Synchronization initialized: mutex=0, empty=5, full=0
+Times are elapsed seconds since program start.
+Created Producer 1
+Created Producer 2
+Created Producer 3
+Created Producer 4
+Created Producer 5
+Created Consumer 1
+Created Consumer 2
+Created Consumer 3
+Created Consumer 4
+Created Consumer 5
+Producer 5 tries to insert 624 at time 0.000360 s (operation 1)
+Producer 5 produced 624 at time 0.000373 s (operation 1, attempted 0.000360 s, waited 0.000014 s)
+slot 0: 624
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 tries to consume at time 1.001868 s (operation 1)
+Consumer 1 consumed 624 at time 1.001901 s (operation 1, attempted 1.001868 s, waited 0.000033 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 1 tries to consume at time 2.002638 s (operation 2)
+Consumer 4 tries to consume at time 2.002746 s (operation 1)
+Producer 1 tries to insert 944 at time 3.002447 s (operation 1)
+Producer 1 produced 944 at time 3.002458 s (operation 1, attempted 3.002447 s, waited 0.000011 s)
+slot 0: -1
+slot 1: 944
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 1 tries to insert 256 at time 3.002467 s (operation 2)
+Producer 1 produced 256 at time 3.002468 s (operation 2, attempted 3.002467 s, waited 0.000001 s)
+slot 0: -1
+slot 1: 944
+slot 2: 256
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Producer 1 tries to insert 257 at time 3.002480 s (operation 3)
+Producer 1 produced 257 at time 3.002481 s (operation 3, attempted 3.002480 s, waited 0.000001 s)
+slot 0: -1
+slot 1: 944
+slot 2: 256
+slot 3: 257
+slot 4: -1
+Buffer count: 3/5
+
+Consumer 1 consumed 944 at time 3.002489 s (operation 2, attempted 2.002638 s, waited 0.999852 s)
+slot 0: -1
+slot 1: -1
+slot 2: 256
+slot 3: 257
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 4 consumed 256 at time 3.002498 s (operation 1, attempted 2.002746 s, waited 0.999752 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 257
+slot 4: -1
+Buffer count: 1/5
+
+Producer 2 tries to insert 936 at time 3.002625 s (operation 1)
+Producer 2 produced 936 at time 3.002636 s (operation 1, attempted 3.002625 s, waited 0.000012 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 257
+slot 4: 936
+Buffer count: 2/5
+
+Consumer 5 tries to consume at time 3.002653 s (operation 1)
+Consumer 5 consumed 257 at time 3.002660 s (operation 1, attempted 3.002653 s, waited 0.000007 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 936
+Buffer count: 1/5
+
+Consumer 5 tries to consume at time 3.002666 s (operation 2)
+Consumer 5 consumed 936 at time 3.002667 s (operation 2, attempted 3.002666 s, waited 0.000001 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 3 tries to consume at time 3.002675 s (operation 1)
+Producer 1 tries to insert 42 at time 4.003371 s (operation 4)
+Producer 1 produced 42 at time 4.003386 s (operation 4, attempted 4.003371 s, waited 0.000014 s)
+slot 0: 42
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 tries to consume at time 4.003411 s (operation 3)
+Consumer 1 consumed 42 at time 4.003412 s (operation 3, attempted 4.003411 s, waited 0.000002 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 4 tries to insert 499 at time 4.003429 s (operation 1)
+Producer 4 produced 499 at time 4.003441 s (operation 1, attempted 4.003429 s, waited 0.000012 s)
+slot 0: -1
+slot 1: 499
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 3 consumed 499 at time 4.003470 s (operation 1, attempted 3.002675 s, waited 1.000795 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 3 tries to insert 685 at time 4.003680 s (operation 1)
+Producer 3 produced 685 at time 4.003686 s (operation 1, attempted 4.003680 s, waited 0.000006 s)
+slot 0: -1
+slot 1: -1
+slot 2: 685
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 3 tries to insert 830 at time 4.003692 s (operation 2)
+Producer 3 produced 830 at time 4.003693 s (operation 2, attempted 4.003692 s, waited 0.000001 s)
+slot 0: -1
+slot 1: -1
+slot 2: 685
+slot 3: 830
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 2 tries to consume at time 4.004577 s (operation 1)
+Consumer 2 consumed 685 at time 4.004582 s (operation 1, attempted 4.004577 s, waited 0.000005 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 830
+slot 4: -1
+Buffer count: 1/5
+
+Producer 5 tries to insert 925 at time 4.007400 s (operation 2)
+Producer 5 produced 925 at time 4.007406 s (operation 2, attempted 4.007400 s, waited 0.000007 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 830
+slot 4: 925
+Buffer count: 2/5
+
+Producer 3 tries to insert 845 at time 6.005261 s (operation 3)
+Producer 3 produced 845 at time 6.005284 s (operation 3, attempted 6.005261 s, waited 0.000023 s)
+slot 0: 845
+slot 1: -1
+slot 2: -1
+slot 3: 830
+slot 4: 925
+Buffer count: 3/5
+
+Producer 3 tries to insert 350 at time 6.005307 s (operation 4)
+Producer 3 produced 350 at time 6.005308 s (operation 4, attempted 6.005307 s, waited 0.000001 s)
+slot 0: 845
+slot 1: 350
+slot 2: -1
+slot 3: 830
+slot 4: 925
+Buffer count: 4/5
+
+Producer 1 tries to insert 787 at time 6.005317 s (operation 5)
+Producer 1 produced 787 at time 6.005326 s (operation 5, attempted 6.005317 s, waited 0.000009 s)
+slot 0: 845
+slot 1: 350
+slot 2: 787
+slot 3: 830
+slot 4: 925
+Buffer count: 5/5
+
+Producer 1 tries to insert 644 at time 6.005332 s (operation 6)
+Consumer 1 tries to consume at time 6.005335 s (operation 4)
+Consumer 1 consumed 830 at time 6.005336 s (operation 4, attempted 6.005335 s, waited 0.000002 s)
+slot 0: 845
+slot 1: 350
+slot 2: 787
+slot 3: -1
+slot 4: 925
+Buffer count: 4/5
+
+Producer 1 produced 644 at time 6.005343 s (operation 6, attempted 6.005332 s, waited 0.000011 s)
+slot 0: 845
+slot 1: 350
+slot 2: 787
+slot 3: 644
+slot 4: 925
+Buffer count: 5/5
+
+Producer 2 tries to insert 807 at time 7.005882 s (operation 2)
+Consumer 4 tries to consume at time 7.005901 s (operation 2)
+Consumer 4 consumed 925 at time 7.005906 s (operation 2, attempted 7.005901 s, waited 0.000005 s)
+slot 0: 845
+slot 1: 350
+slot 2: 787
+slot 3: 644
+slot 4: -1
+Buffer count: 4/5
+
+Producer 2 produced 807 at time 7.005945 s (operation 2, attempted 7.005882 s, waited 0.000064 s)
+slot 0: 845
+slot 1: 350
+slot 2: 787
+slot 3: 644
+slot 4: 807
+Buffer count: 5/5
+
+Consumer 3 tries to consume at time 7.006011 s (operation 2)
+Consumer 3 consumed 845 at time 7.006019 s (operation 2, attempted 7.006011 s, waited 0.000008 s)
+slot 0: -1
+slot 1: 350
+slot 2: 787
+slot 3: 644
+slot 4: 807
+Buffer count: 4/5
+
+Consumer 5 tries to consume at time 7.006028 s (operation 3)
+Consumer 5 consumed 350 at time 7.006030 s (operation 3, attempted 7.006028 s, waited 0.000002 s)
+slot 0: -1
+slot 1: -1
+slot 2: 787
+slot 3: 644
+slot 4: 807
+Buffer count: 3/5
+
+Producer 5 tries to insert 550 at time 7.009852 s (operation 3)
+Producer 5 produced 550 at time 7.009861 s (operation 3, attempted 7.009852 s, waited 0.000010 s)
+slot 0: 550
+slot 1: -1
+slot 2: 787
+slot 3: 644
+slot 4: 807
+Buffer count: 4/5
+
+Producer 5 tries to insert 601 at time 7.009867 s (operation 4)
+Producer 5 produced 601 at time 7.009868 s (operation 4, attempted 7.009867 s, waited 0.000001 s)
+slot 0: 550
+slot 1: 601
+slot 2: 787
+slot 3: 644
+slot 4: 807
+Buffer count: 5/5
+
+Producer 2 tries to insert 844 at time 8.006734 s (operation 3)
+Producer 4 tries to insert 100 at time 8.006817 s (operation 2)
+Producer 1 tries to insert 606 at time 8.006943 s (operation 7)
+Consumer 2 tries to consume at time 8.007940 s (operation 2)
+Consumer 2 consumed 787 at time 8.007947 s (operation 2, attempted 8.007940 s, waited 0.000008 s)
+slot 0: 550
+slot 1: 601
+slot 2: -1
+slot 3: 644
+slot 4: 807
+Buffer count: 4/5
+
+Producer 2 produced 844 at time 8.007975 s (operation 3, attempted 8.006734 s, waited 0.001240 s)
+slot 0: 550
+slot 1: 601
+slot 2: 844
+slot 3: 644
+slot 4: 807
+Buffer count: 5/5
+
+Consumer 4 tries to consume at time 10.008411 s (operation 3)
+Consumer 4 consumed 644 at time 10.008435 s (operation 3, attempted 10.008411 s, waited 0.000024 s)
+slot 0: 550
+slot 1: 601
+slot 2: 844
+slot 3: -1
+slot 4: 807
+Buffer count: 4/5
+
+Consumer 1 tries to consume at time 10.008444 s (operation 5)
+Consumer 1 consumed 807 at time 10.008455 s (operation 5, attempted 10.008444 s, waited 0.000010 s)
+slot 0: 550
+slot 1: 601
+slot 2: 844
+slot 3: -1
+slot 4: -1
+Buffer count: 3/5
+
+Producer 1 produced 606 at time 10.008477 s (operation 7, attempted 8.006943 s, waited 2.001534 s)
+slot 0: 550
+slot 1: 601
+slot 2: 844
+slot 3: 606
+slot 4: -1
+Buffer count: 4/5
+
+Consumer 1 tries to consume at time 10.008497 s (operation 6)
+Consumer 1 consumed 550 at time 10.008499 s (operation 6, attempted 10.008497 s, waited 0.000002 s)
+slot 0: -1
+slot 1: 601
+slot 2: 844
+slot 3: 606
+slot 4: -1
+Buffer count: 3/5
+
+Consumer 1 tries to consume at time 10.008513 s (operation 7)
+Consumer 1 consumed 601 at time 10.008515 s (operation 7, attempted 10.008513 s, waited 0.000002 s)
+slot 0: -1
+slot 1: -1
+slot 2: 844
+slot 3: 606
+slot 4: -1
+Buffer count: 2/5
+
+Producer 4 produced 100 at time 10.008531 s (operation 2, attempted 8.006817 s, waited 2.001714 s)
+slot 0: -1
+slot 1: -1
+slot 2: 844
+slot 3: 606
+slot 4: 100
+Buffer count: 3/5
+
+Producer 4 tries to insert 994 at time 10.008540 s (operation 3)
+Producer 4 produced 994 at time 10.008542 s (operation 3, attempted 10.008540 s, waited 0.000002 s)
+slot 0: 994
+slot 1: -1
+slot 2: 844
+slot 3: 606
+slot 4: 100
+Buffer count: 4/5
+
+Producer 3 tries to insert 892 at time 10.008607 s (operation 5)
+Producer 3 produced 892 at time 10.008611 s (operation 5, attempted 10.008607 s, waited 0.000003 s)
+slot 0: 994
+slot 1: 892
+slot 2: 844
+slot 3: 606
+slot 4: 100
+Buffer count: 5/5
+
+Consumer 2 tries to consume at time 10.009508 s (operation 3)
+Consumer 2 consumed 844 at time 10.009513 s (operation 3, attempted 10.009508 s, waited 0.000004 s)
+slot 0: 994
+slot 1: 892
+slot 2: -1
+slot 3: 606
+slot 4: 100
+Buffer count: 4/5
+
+Consumer 4 tries to consume at time 11.009258 s (operation 4)
+Consumer 4 consumed 606 at time 11.009271 s (operation 4, attempted 11.009258 s, waited 0.000013 s)
+slot 0: 994
+slot 1: 892
+slot 2: -1
+slot 3: -1
+slot 4: 100
+Buffer count: 3/5
+
+Consumer 4 tries to consume at time 11.009278 s (operation 5)
+Consumer 4 consumed 100 at time 11.009279 s (operation 5, attempted 11.009278 s, waited 0.000001 s)
+slot 0: 994
+slot 1: 892
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 5 tries to consume at time 11.009424 s (operation 4)
+Consumer 5 consumed 994 at time 11.009430 s (operation 4, attempted 11.009424 s, waited 0.000006 s)
+slot 0: -1
+slot 1: 892
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 3 tries to consume at time 11.009455 s (operation 3)
+Consumer 3 consumed 892 at time 11.009463 s (operation 3, attempted 11.009455 s, waited 0.000008 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 2 tries to insert 223 at time 11.010296 s (operation 4)
+Producer 2 produced 223 at time 11.010303 s (operation 4, attempted 11.010296 s, waited 0.000007 s)
+slot 0: -1
+slot 1: -1
+slot 2: 223
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 5 tries to insert 984 at time 11.013188 s (operation 5)
+Producer 5 produced 984 at time 11.013193 s (operation 5, attempted 11.013188 s, waited 0.000005 s)
+slot 0: -1
+slot 1: -1
+slot 2: 223
+slot 3: 984
+slot 4: -1
+Buffer count: 2/5
+
+Producer 4 tries to insert 179 at time 12.010163 s (operation 4)
+Producer 4 produced 179 at time 12.010177 s (operation 4, attempted 12.010163 s, waited 0.000014 s)
+slot 0: -1
+slot 1: -1
+slot 2: 223
+slot 3: 984
+slot 4: 179
+Buffer count: 3/5
+
+Consumer 1 tries to consume at time 12.010279 s (operation 8)
+Consumer 1 consumed 223 at time 12.010291 s (operation 8, attempted 12.010279 s, waited 0.000012 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 984
+slot 4: 179
+Buffer count: 2/5
+
+Producer 2 tries to insert 581 at time 12.011145 s (operation 5)
+Producer 2 produced 581 at time 12.011155 s (operation 5, attempted 12.011145 s, waited 0.000010 s)
+slot 0: 581
+slot 1: -1
+slot 2: -1
+slot 3: 984
+slot 4: 179
+Buffer count: 3/5
+
+Consumer 4 tries to consume at time 14.011788 s (operation 6)
+Consumer 4 consumed 984 at time 14.011811 s (operation 6, attempted 14.011788 s, waited 0.000023 s)
+slot 0: 581
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 179
+Buffer count: 2/5
+
+Consumer 5 tries to consume at time 14.012088 s (operation 5)
+Consumer 5 consumed 179 at time 14.012102 s (operation 5, attempted 14.012088 s, waited 0.000015 s)
+slot 0: 581
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 4 tries to insert 472 at time 14.012175 s (operation 5)
+Producer 4 produced 472 at time 14.012180 s (operation 5, attempted 14.012175 s, waited 0.000005 s)
+slot 0: 581
+slot 1: 472
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 3 tries to consume at time 14.012205 s (operation 4)
+Consumer 3 consumed 581 at time 14.012213 s (operation 4, attempted 14.012205 s, waited 0.000008 s)
+slot 0: -1
+slot 1: 472
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 3 tries to consume at time 14.012218 s (operation 5)
+Consumer 3 consumed 472 at time 14.012219 s (operation 5, attempted 14.012218 s, waited 0.000001 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 1 tries to insert 792 at time 14.012277 s (operation 8)
+Producer 1 produced 792 at time 14.012280 s (operation 8, attempted 14.012277 s, waited 0.000004 s)
+slot 0: -1
+slot 1: -1
+slot 2: 792
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 3 tries to insert 333 at time 14.012303 s (operation 6)
+Producer 3 produced 333 at time 14.012310 s (operation 6, attempted 14.012303 s, waited 0.000007 s)
+slot 0: -1
+slot 1: -1
+slot 2: 792
+slot 3: 333
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 2 tries to consume at time 14.013067 s (operation 4)
+Consumer 2 consumed 792 at time 14.013072 s (operation 4, attempted 14.013067 s, waited 0.000005 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 333
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 4 tries to consume at time 15.012800 s (operation 7)
+Consumer 4 consumed 333 at time 15.012832 s (operation 7, attempted 15.012800 s, waited 0.000032 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 1 tries to consume at time 15.013262 s (operation 9)
+Consumer 2 tries to consume at time 15.013990 s (operation 5)
+Producer 5 tries to insert 328 at time 15.016316 s (operation 6)
+Producer 5 produced 328 at time 15.016322 s (operation 6, attempted 15.016316 s, waited 0.000005 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 328
+Buffer count: 1/5
+
+Producer 5 tries to insert 973 at time 15.016336 s (operation 7)
+Producer 5 produced 973 at time 15.016338 s (operation 7, attempted 15.016336 s, waited 0.000001 s)
+slot 0: 973
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 328
+Buffer count: 2/5
+
+Producer 5 tries to insert 567 at time 15.016351 s (operation 8)
+Producer 5 produced 567 at time 15.016353 s (operation 8, attempted 15.016351 s, waited 0.000002 s)
+slot 0: 973
+slot 1: 567
+slot 2: -1
+slot 3: -1
+slot 4: 328
+Buffer count: 3/5
+
+Consumer 2 consumed 328 at time 15.016371 s (operation 5, attempted 15.013990 s, waited 0.002381 s)
+slot 0: 973
+slot 1: 567
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 1 consumed 973 at time 15.016388 s (operation 9, attempted 15.013262 s, waited 0.003126 s)
+slot 0: -1
+slot 1: 567
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 tries to consume at time 15.016398 s (operation 10)
+Consumer 1 consumed 567 at time 15.016399 s (operation 10, attempted 15.016398 s, waited 0.000001 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 5 tries to consume at time 16.013968 s (operation 6)
+Producer 4 tries to insert 344 at time 16.014330 s (operation 6)
+Producer 4 produced 344 at time 16.014342 s (operation 6, attempted 16.014330 s, waited 0.000012 s)
+slot 0: -1
+slot 1: -1
+slot 2: 344
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 5 consumed 344 at time 16.014373 s (operation 6, attempted 16.013968 s, waited 0.000405 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 5 tries to consume at time 16.014380 s (operation 7)
+Producer 3 tries to insert 908 at time 16.014785 s (operation 7)
+Producer 3 produced 908 at time 16.014793 s (operation 7, attempted 16.014785 s, waited 0.000008 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 908
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 5 consumed 908 at time 16.014814 s (operation 7, attempted 16.014380 s, waited 0.000434 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 2 tries to insert 577 at time 16.016163 s (operation 6)
+Producer 2 produced 577 at time 16.016171 s (operation 6, attempted 16.016163 s, waited 0.000008 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 577
+Buffer count: 1/5
+
+Producer 5 tries to insert 880 at time 16.017116 s (operation 9)
+Producer 5 produced 880 at time 16.017120 s (operation 9, attempted 16.017116 s, waited 0.000004 s)
+slot 0: 880
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 577
+Buffer count: 2/5
+
+Consumer 2 tries to consume at time 16.017166 s (operation 6)
+Consumer 2 consumed 577 at time 16.017170 s (operation 6, attempted 16.017166 s, waited 0.000004 s)
+slot 0: 880
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 2 tries to consume at time 16.017175 s (operation 7)
+Consumer 2 consumed 880 at time 16.017175 s (operation 7, attempted 16.017175 s, waited 0.000001 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Producer 1 tries to insert 10 at time 17.015105 s (operation 9)
+Producer 1 produced 10 at time 17.015171 s (operation 9, attempted 17.015105 s, waited 0.000065 s)
+slot 0: -1
+slot 1: 10
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 2 tries to consume at time 17.017995 s (operation 8)
+Consumer 2 consumed 10 at time 17.018006 s (operation 8, attempted 17.017995 s, waited 0.000011 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 3 tries to consume at time 18.016025 s (operation 6)
+Consumer 4 tries to consume at time 18.016418 s (operation 8)
+Producer 3 tries to insert 205 at time 18.016622 s (operation 8)
+Producer 3 produced 205 at time 18.016631 s (operation 8, attempted 18.016622 s, waited 0.000009 s)
+slot 0: -1
+slot 1: -1
+slot 2: 205
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 3 tries to insert 706 at time 18.016646 s (operation 9)
+Producer 3 produced 706 at time 18.016648 s (operation 9, attempted 18.016646 s, waited 0.000001 s)
+slot 0: -1
+slot 1: -1
+slot 2: 205
+slot 3: 706
+slot 4: -1
+Buffer count: 2/5
+
+Producer 3 tries to insert 950 at time 18.016658 s (operation 10)
+Producer 3 produced 950 at time 18.016663 s (operation 10, attempted 18.016658 s, waited 0.000005 s)
+slot 0: -1
+slot 1: -1
+slot 2: 205
+slot 3: 706
+slot 4: 950
+Buffer count: 3/5
+
+Consumer 4 consumed 205 at time 18.016669 s (operation 8, attempted 18.016418 s, waited 0.000251 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 706
+slot 4: 950
+Buffer count: 2/5
+
+Consumer 3 consumed 706 at time 18.016683 s (operation 6, attempted 18.016025 s, waited 0.000658 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 950
+Buffer count: 1/5
+
+Producer 3 tries to insert 958 at time 18.016695 s (operation 11)
+Producer 3 produced 958 at time 18.016697 s (operation 11, attempted 18.016695 s, waited 0.000001 s)
+slot 0: 958
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 950
+Buffer count: 2/5
+
+Producer 3 tries to insert 125 at time 18.016701 s (operation 12)
+Producer 3 produced 125 at time 18.016702 s (operation 12, attempted 18.016701 s, waited 0.000001 s)
+slot 0: 958
+slot 1: 125
+slot 2: -1
+slot 3: -1
+slot 4: 950
+Buffer count: 3/5
+
+Consumer 2 tries to consume at time 18.018992 s (operation 9)
+Consumer 2 consumed 950 at time 18.019001 s (operation 9, attempted 18.018992 s, waited 0.000009 s)
+slot 0: 958
+slot 1: 125
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Producer 1 tries to insert 182 at time 19.017018 s (operation 10)
+Producer 1 produced 182 at time 19.017052 s (operation 10, attempted 19.017018 s, waited 0.000034 s)
+slot 0: 958
+slot 1: 125
+slot 2: 182
+slot 3: -1
+slot 4: -1
+Buffer count: 3/5
+
+Producer 4 tries to insert 720 at time 19.017203 s (operation 7)
+Producer 4 produced 720 at time 19.017206 s (operation 7, attempted 19.017203 s, waited 0.000004 s)
+slot 0: 958
+slot 1: 125
+slot 2: 182
+slot 3: 720
+slot 4: -1
+Buffer count: 4/5
+
+Consumer 5 tries to consume at time 19.017610 s (operation 8)
+Consumer 5 consumed 958 at time 19.017618 s (operation 8, attempted 19.017610 s, waited 0.000008 s)
+slot 0: -1
+slot 1: 125
+slot 2: 182
+slot 3: 720
+slot 4: -1
+Buffer count: 3/5
+
+Producer 2 tries to insert 702 at time 19.019206 s (operation 7)
+Producer 2 produced 702 at time 19.019215 s (operation 7, attempted 19.019206 s, waited 0.000009 s)
+slot 0: -1
+slot 1: 125
+slot 2: 182
+slot 3: 720
+slot 4: 702
+Buffer count: 4/5
+
+Consumer 1 tries to consume at time 19.019493 s (operation 11)
+Consumer 1 consumed 125 at time 19.019497 s (operation 11, attempted 19.019493 s, waited 0.000005 s)
+slot 0: -1
+slot 1: -1
+slot 2: 182
+slot 3: 720
+slot 4: 702
+Buffer count: 3/5
+
+Producer 5 tries to insert 828 at time 19.020187 s (operation 10)
+Producer 5 produced 828 at time 19.020195 s (operation 10, attempted 19.020187 s, waited 0.000008 s)
+slot 0: 828
+slot 1: -1
+slot 2: 182
+slot 3: 720
+slot 4: 702
+Buffer count: 4/5
+
+Stopping at time 20.009853 s; pending attempts will be stopped.
+Summary: produced=46 consumed=42 remaining=4
+slot 0: 828
+slot 1: -1
+slot 2: 182
+slot 3: 720
+slot 4: 702
+Buffer count: 4/5
+
+All threads joined; synchronization resources released.

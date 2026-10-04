@@ -1,0 +1,155 @@
+Bounded buffer: capacity=5, runtime=12 s, producers=1, consumers=5
+Synchronization initialized: mutex=0, empty=5, full=0
+Times are elapsed seconds since program start.
+Created Producer 1
+Created Consumer 1
+Created Consumer 2
+Created Consumer 3
+Created Consumer 4
+Created Consumer 5
+Consumer 4 tries to consume at time 0.000341 s (operation 1)
+Consumer 5 tries to consume at time 1.001175 s (operation 1)
+Consumer 1 tries to consume at time 3.002798 s (operation 1)
+Producer 1 tries to insert 944 at time 3.005068 s (operation 1)
+Producer 1 produced 944 at time 3.005084 s (operation 1, attempted 3.005068 s, waited 0.000015 s)
+slot 0: 944
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Producer 1 tries to insert 256 at time 3.005103 s (operation 2)
+Producer 1 produced 256 at time 3.005104 s (operation 2, attempted 3.005103 s, waited 0.000001 s)
+slot 0: 944
+slot 1: 256
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Producer 1 tries to insert 257 at time 3.005121 s (operation 3)
+Producer 1 produced 257 at time 3.005122 s (operation 3, attempted 3.005121 s, waited 0.000001 s)
+slot 0: 944
+slot 1: 256
+slot 2: 257
+slot 3: -1
+slot 4: -1
+Buffer count: 3/5
+
+Consumer 5 consumed 944 at time 3.005135 s (operation 1, attempted 1.001175 s, waited 2.003959 s)
+slot 0: -1
+slot 1: 256
+slot 2: 257
+slot 3: -1
+slot 4: -1
+Buffer count: 2/5
+
+Consumer 4 consumed 256 at time 3.005148 s (operation 1, attempted 0.000341 s, waited 3.004807 s)
+slot 0: -1
+slot 1: -1
+slot 2: 257
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 1 consumed 257 at time 3.005165 s (operation 1, attempted 3.002798 s, waited 0.002366 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 2 tries to consume at time 4.003331 s (operation 1)
+Consumer 3 tries to consume at time 4.004051 s (operation 1)
+Producer 1 tries to insert 42 at time 4.005942 s (operation 4)
+Producer 1 produced 42 at time 4.005950 s (operation 4, attempted 4.005942 s, waited 0.000008 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: 42
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 2 consumed 42 at time 4.005980 s (operation 1, attempted 4.003331 s, waited 0.002649 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 2 tries to consume at time 4.005994 s (operation 2)
+Consumer 5 tries to consume at time 4.005997 s (operation 2)
+Consumer 1 tries to consume at time 5.006731 s (operation 2)
+Consumer 4 tries to consume at time 5.006792 s (operation 2)
+Producer 1 tries to insert 787 at time 6.007952 s (operation 5)
+Producer 1 produced 787 at time 6.007983 s (operation 5, attempted 6.007952 s, waited 0.000031 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 787
+Buffer count: 1/5
+
+Producer 1 tries to insert 644 at time 6.007994 s (operation 6)
+Producer 1 produced 644 at time 6.007995 s (operation 6, attempted 6.007994 s, waited 0.000001 s)
+slot 0: 644
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: 787
+Buffer count: 2/5
+
+Consumer 3 consumed 787 at time 6.008015 s (operation 1, attempted 4.004051 s, waited 2.003964 s)
+slot 0: 644
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 2 consumed 644 at time 6.008032 s (operation 2, attempted 4.005994 s, waited 2.002038 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 2 tries to consume at time 6.008045 s (operation 3)
+Producer 1 tries to insert 606 at time 8.010033 s (operation 7)
+Producer 1 produced 606 at time 8.010075 s (operation 7, attempted 8.010033 s, waited 0.000042 s)
+slot 0: -1
+slot 1: 606
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 1/5
+
+Consumer 5 consumed 606 at time 8.010114 s (operation 2, attempted 4.005997 s, waited 4.004117 s)
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+Consumer 5 tries to consume at time 9.010877 s (operation 3)
+Consumer 3 tries to consume at time 9.011162 s (operation 2)
+Stopping at time 12.007299 s; pending attempts will be stopped.
+Consumer 4 operation 2 stopped before removal at time 12.007348 s
+Consumer 3 operation 2 stopped before removal at time 12.007366 s
+Consumer 2 operation 3 stopped before removal at time 12.007400 s
+Consumer 1 operation 2 stopped before removal at time 12.007427 s
+Consumer 5 operation 3 stopped before removal at time 12.007637 s
+Summary: produced=7 consumed=7 remaining=0
+slot 0: -1
+slot 1: -1
+slot 2: -1
+slot 3: -1
+slot 4: -1
+Buffer count: 0/5
+
+All threads joined; synchronization resources released.
